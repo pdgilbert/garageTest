@@ -31,16 +31,17 @@ mkdir -p tmp
 echo "*************** building" ${DB}
 
 echo Load csv file of sensor readings into db ...
-   ../utils/loadReadings --infile='tmp/testData.csv' --outdb=${DB}
+   ./utils/loadReadings --infile='testData.csv' --outdb=SensorReadings.db
 
 echo extract sensor locations from .3dm file and write sensorLocations.txt ...
    # next requires having once in utils/  done  `python3 -m venv  Rhino3dm`
    # and  pip install rhino3dm in that environment.
 
-   mkdir -p tmp
-   source ../utils/Rhino3dm/bin/activate  # activate python environment
+#   mkdir -p tmp
+#   source ./utils/Rhino3dm/bin/activate  # activate python environment
+   source Rhino3dm/bin/activate  # activate python environment
 
-   ../utils/extract3dmSensorLocations ${F3DM} >tmp/sensorLocations.txt
+   ./utils/extract3dmSensorLocations SensorReadings.db >sensorLocations.txt
 
    deactivate    
 
