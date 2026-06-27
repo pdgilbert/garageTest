@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# This script is simplified from SensorProject/utils/buildDB.
+# 
+# 1/ Reads  sensor recordings from testData.csv. This file is derived from raw
+#    data recorded from sensor, but some preprocessing has already been done
+#    in order to simplify this example. See SensorProject/Garage for the preprocessing.
+# 2/ Reads sensor locations from (Rhino) 3dm file ${1}. The sensor locations
+#        are extracted by python program extract3dmSensorLocations and 
+#        written to file tmp/sensorLocations.txt.
+# 3/ Writes the database file SensorReadings.db.
+#
+# The script also needs files  SensorIdHash.txt and  ModuleIdHash.txt so that the python 
+# loadSensors script is unchanged from that used in SensorProject/Garage, but the tables
+# generated from those files are not used in Rhino.
+
+
+if [ $# -ne 1 ]; then 
+  echo Error. Needs 1 argument indicating 
+  echo   the 3dm file with sensor locations.
+  echo Examples: ../utils/simpleBuildDB    slab_sensors.3dm   
+  echo           ../utils/simplebuildDB  garage_sensors.3dm
+  exit 1
+fi;
+
+export F3DM=${1}
+export DB=SensorReadings.db
+
+mkdir -p tmp
+
+echo "*************** building" ${DB}
+
+echo Load csv file of sensor readings into db ...
+   ../utils/loadReadings --infile='tmp/testData.csv' --outdb=${DB}
+
+echo extract sensor locations from .3dm file and write sensorLocations.txt ...
+   # next requires having once in utils/  done  `python3 -m venv  Rhino3dm`
+   # and  pip install rhino3dm in that environment.
+
+   mkdir -p tmp
+   source ../utils/Rhino3dm/bin/activate  # activate python environment
+
+   ../utils/extract3dmSensorLocations ${F3DM} >tmp/sensorLocations.txt
+
+   deactivate    
+
+echo Load sensor ID, location, module, etc into  db ...
+   ../utils/loadSensors    \
+         --sensorLocations='tmp/sensorLocations.txt'  \
+         --SensorIdHash='SensorIdHash.txt' \
+         --ModuleIdHash='ModuleIdHash.txt' --outdb=${DB}
+
+echo done load.
+
+echo Now run tests with
+echo "    ./runTests ${DB}"
