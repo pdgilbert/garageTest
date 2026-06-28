@@ -14,7 +14,6 @@ Two steps of the data flow in `SensorProject` are illustrated:
 2/ Selecting data from the database and displaying it with `Grasshopper` in 
    a Rhino `.3dm` model.
 
-
 ### Tools Needed
 
 - `Rhino` (tested with v8).
@@ -22,12 +21,52 @@ Two steps of the data flow in `SensorProject` are illustrated:
 - `SQLite3`.
 - `python3` and python module `rhino3dm`.
 
-`Rhino` is needed for the final display but is not need to build the database and do
-python or sql queries and testing. 
+`Rhino` is needed for displaying data in the 3dm model, but is not need to build the 
+database and do python or sql queries and testing. 
 `Rhino`  requires a licence and does not run on Linux. Other programs, including the python
 module `rhino3dm`, are freely available for most OSs and many are preinstalled on 
 MacOS and Linux system.
 
+## Setup
+
+Directions below are to be entered in a shell window such as bash or zsh
+(MacOS Terminal, possibly in Applications>Utilities). Start by opening a shell window.
+
+You can first verify what software is available with `which`. Enter
+
+```
+which git
+which python3
+which pip3
+which sqlite3
+```
+
+If these return blank or `not found` then programs will need to be installed 
+or the search path adjusted.
+
+
+### Copy the Programs and Example Date
+
+The easiest way to copy everything is to clone the git repository:
+
+```
+git clone  https://github.com/pdgilbert/garageTest.git
+
+```
+(This is simple and does not require a github account. To contribute back it 
+is better to get an account and clone with ssh, but that require more setup.)
+
+The clone creates a subdirectory `garageTest`. Change into the subdirectory
+and list the files:
+```
+cd garageTest
+ls
+```
+
+Notice that you now have a local copy of this file (`README.md`)
+
+
+## Building the Database
 
 
 ### Database
@@ -53,29 +92,26 @@ In a shell (MacOS terminal) run
 ```
 python3 -m venv  Rhino3dm
 source Rhino3dm/bin/activate  # activate python environment
+pip install --upgrade pip     # suggested to avoid warnings from old version
 pip install rhino3dm          # install rhino3dm in the python environment
 ```
 
-The process for building the database is as follows:
-
-1/ To build the (SQLite) database  SensorReadings.db run
-
-- Load `testData.csv` into the database (table `SensorData`).
+1/ To build the (SQLite) database  `SensorReadings.db` and load `testData.csv` 
+   into it (table `SensorData`) enter
 
 ```
-   source Rhino3dm/bin/activate  # activate python environment if not already active
    utils/loadReadings --infile='testData.csv' --outdb=SensorReadings.db
 ```
 This may indicates 1 bad line in 10,000.
 
-- Extract sensor locations from (Rhino) `3dm` and write to file `sensorLocations.txt`.
+Then extract sensor locations from (Rhino) `3dm` and write to file `sensorLocations.txt`.
 ```
    utils/extract3dmSensorLocations garage_sensors.3dm >sensorLocations.txt
 or  older
    utils/extract3dmSensorLocations slab_sensors.3dm  >sensorLocations.txt
 ```
 
-- Load sensor details (id, location, module id, module socket number)  into 
+Finally, load sensor details (id, location, module id, module socket number)  into 
      the database (table `Sensors`) and the module descriptions into 
      the target database (table `Modules`).
 
@@ -111,7 +147,7 @@ or  older
 ... to be continued
 
 
-### Data Display
+## Data Display
 
 Currently, displaying the data requires Rhino 8, the building model file `Garage/slab_sensors.3dm`,
 the `Grasshopper` script `Garage/slab_sensor_Vis.ghx` and `python` code 
