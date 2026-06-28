@@ -53,8 +53,8 @@ The easiest way to copy everything is to clone the git repository:
 git clone  https://github.com/pdgilbert/garageTest.git
 
 ```
-(This is simple and does not require a github account. To contribute back it 
-is better to get an account and clone with ssh, but that require more setup.)
+(Clone with https is simple and does not require a github account. To contribute back it 
+is better to get an account and clone with ssh, but that requires more setup.)
 
 The clone creates a subdirectory `garageTest`. Change into the subdirectory
 and list the files:
@@ -69,8 +69,6 @@ Notice that you now have a local copy of this file (`README.md`)
 ## Building the Database
 
 
-### Database
-
 Files used to build the database are as follows:
 - An example of sensor readings data is in file `testData.csv`. 
   This file has temperature and humidity readings identified with the sensor id.
@@ -82,11 +80,17 @@ Files used to build the database are as follows:
   Locations are extracted by python program `utils/extract3dmSensorLocations` and 
   written to file `sensorLocations.txt`.
 - `SensorIdHash.txt` provides the mapping from module id and socket number
-  to sensors id. It has already been used to create file `testData.csv` but is here so that the script 
-- `ModuleIdHash.txt` is unused in Rhino but is here so that the script to .
+  to sensors id. It has already been used to create file `testData.csv`.
+  It is here so that the script can add some additional information to the database,
+  but that information is not used for the Rhino display.
+- `ModuleIdHash.txt` provides discriptive information about modules. 
+  It is here so that the script can add this information to the database,
+  but that information is not used for the Rhino display.
 
 
-0/ Before building the database setup the python invironment. 
+### Details
+
+0/ Before building the database setup the python environment. 
 In a shell (MacOS terminal) run
 
 ```
@@ -134,7 +138,7 @@ Finally, load sensor details (id, location, module id, module socket number)  in
           WHERE (timeStamp > '2026-02-08 20:50:00')
             AND (timeStamp < '2026-02-08 21:00:00') ;
 
-      SELECT  COUNT(*) FROM sensors;                          -- 141 sensors
+      SELECT  COUNT(*) FROM sensors;                          -- 141 or 164 (slab or garage) sensors
       SELECT COUNT(DISTINCT(sensorData.id)) FROM SensorData ; -- sample uses only 91
 
       SELECT COUNT(DISTINCT(sensorData.id)) FROM SensorData 
@@ -144,21 +148,22 @@ Finally, load sensor details (id, location, module id, module socket number)  in
     .exit
 ```
 
-... to be continued
-
 
 ## Data Display
 
-Currently, displaying the data requires Rhino 8, the building model file `Garage/slab_sensors.3dm`,
-the `Grasshopper` script `Garage/slab_sensor_Vis.ghx` and `python` code 
-`extractReadingsSlice.py` which must be loaded into the `Grasshopper` script.
+Currently, displaying the data requires Rhino 8, the building model file 
+`garage_sensors.3dm` or `slab_sensors.3dm`,
+the `Grasshopper` script `slab_sensor_Vis.ghx` and `python` code 
+`utils/extractReadingsSlice.py` which must be loaded into the `Grasshopper` script.
 
+1/ Start `Rhino` and open `garage_sensor.3dm`.
+
+2/ Start `Grasshopper` (>Tools> Grasshopper). (Possibly needs to be installed.)
+
+3/ Close the "getting Started" window and open document `sensor_Vis.ghx`. (Possibly need
+   to "ignore recovery file".)
 
 To be continued...
-
-## License
-
-
 
 ## License
 
