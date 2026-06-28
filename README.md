@@ -160,8 +160,30 @@ the `Grasshopper` script `slab_sensor_Vis.ghx` and `python` code
 
 2/ Start `Grasshopper` (>Tools> Grasshopper). (Possibly needs to be installed.)
 
-3/ Close the "getting Started" window and open document `sensor_Vis.ghx`. (Possibly need
+3/ Close the "getting Started" window and `File> Open Document` `garageTest/sensor_Vis.ghx`. (Possibly need
    to "ignore recovery file".)
+
+The large block with several sliders feeding into it is the main data slice control block.
+It runs the python script `utils/extractReadingsSlice.py`.  
+[It should already contain the script, which you can see with `right click > open script editor`.
+If it is not there then it needs to be copied into the script editor and saved.]
+
+The data slice control block will be green if it has run successfuly. 
+If it is red then some error has occurred.
+(Sometimes just clicking on the block is enough to rerun it successfully.)
+The yellow  rectangle above the control block contains error messages.
+
+If error messages indicates that the database file is not found then  use the rectangle `C:` 
+to set the path   (right click >select one existing file) to `SensorReadings.db`.
+
+If error messages indicates `arg is an empty vector` the database was found but the query did not find any data.
+Possibly the data setting is outside the range of the sample.
+(Point at the slider and when adjust arrows appear Left click and hold while moving on the slides.)
+Try setting the sliceStart to '2026-02-08 20:50:00', the slice to 12 minutes.
+and the `dot size` to 5. (Bottom right of Grasshopper screen, but not in dataslice control block.)
+
+If everything works you will see coloured dots in the Rhino model of the building and 
+the data slice control block will be green.
 
 To be continued...
 
