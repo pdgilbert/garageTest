@@ -1,37 +1,28 @@
-#  python3   tests/test1.py   dbName=FileName.db   >tmp/test1_out.txt
+Below are python3 examples.
+
+```
+python3
 
 import sqlite3
 from datetime import datetime, timedelta # library and a module are both called datetime
 
-import argparse
 import os
 
-parser = argparse.ArgumentParser(description='Database tests.')
-parser.add_argument('--dbName', type=str, help='database to test')
-args = parser.parse_args()
-dbName=args.dbName
-#print("database: ", dbName)
+dbName='SensorReadings.db'
 
 if not os.path.isfile(dbName): 
    print('file   ' + dbName +' does not exist.')
-   exit(1)
+
 
 fmt = '%Y-%m-%d %H:%M:%S'
 
-sliceStartYear  = 2026
-sliceStartMonth = 1
-sliceStartDay   = 3
-sliceStartHour   =  0
-sliceStartMinute = 12
-sliceStartSecond =  0
-
-SliceStart  = datetime(year=sliceStartYear, month=sliceStartMonth, day=sliceStartDay,
-                hour=sliceStartHour, minute=sliceStartMinute, second=sliceStartSecond )
-
-sliceHours = 2
-sliceMinutes = 0
+# slice for first test data
+sliceStart ='2026-02-08 20:50:00'
+sliceMinutes = 12
 sliceSeconds = 0
-SliceEnd = SliceStart + timedelta(days=0, hours=sliceHours, minutes=sliceMinutes, seconds=sliceSeconds)
+
+SliceStart  = datetime.strptime(sliceStart, fmt)
+SliceEnd = SliceStart + timedelta(days=0, hours=0, minutes=sliceMinutes, seconds=sliceSeconds)
 
 print("SliceStart: ", SliceStart)
 print("SliceEnd:   ", SliceEnd)
@@ -53,7 +44,6 @@ x = [ v[3]  for v in zz ]
 y = [ v[4]  for v in zz ]
 z = [ v[5]  for v in zz ]
 
-ID = [ v[0] for v in zz ]
 IDtemperature = [ [v[0],v[2]]  for v in zz ]
 
 minTemp = min(temperature)
@@ -64,10 +54,5 @@ print("min x ", min(x), "max x ", max(x))
 print("min y ", min(y), "max y ", max(y))
 print("min z ", min(z), "max z ", max(z))
 
-#  z.index(min(z)) gets only one of the minimums
-
-#indexMin = [i for i, j in enumerate(z) if j == min(z)]
-#minID = [ID[i] for i in indexMin]
-#minz = [z[i] for i in indexMin]
-
 con.close() 
+quit()

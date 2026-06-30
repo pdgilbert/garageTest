@@ -41,7 +41,7 @@ which pip3
 which sqlite3
 ```
 
-If these return blank or `not found` then programs will need to be installed 
+If these return blank or "not found" then programs will need to be installed 
 or the search path adjusted.
 
 
@@ -72,11 +72,12 @@ Notice that you now have a local copy of this file (`README.md`)
 Files used to build the database are as follows:
 - An example of sensor readings data is in file `testData.csv`. 
   This file has temperature and humidity readings identified with the sensor id.
-  It has been processed from the data transmitted from wall modules that have many sensors
-  plugged into sockets. That original data is identified by a module id and socket number.
-  See SensorProject/Garage for the complete process.
-- The sensor locations are recorded in a (Rhino) `3dm` file, for example, 
-  `slab_sensors.3dm` or `garage_sensors.3dm`.
+  The original data transmitted from wall modules is identified by a module id 
+  and socket number. The file `testData.csv` has been processed to convert the 
+  module id and socket number to a sensor id.
+  See `SensorProject/Garage` for the complete process. and more extensive data.
+  The file `testData.csv` may get updated occassionaly to have better example data. 
+- The sensor locations are recorded in a (Rhino) file `garage_sensors.3dm`.
   Locations are extracted by python program `utils/extract3dmSensorLocations` and 
   written to file `sensorLocations.txt`.
 - `SensorIdHash.txt` provides the mapping from module id and socket number
@@ -90,7 +91,7 @@ Files used to build the database are as follows:
 
 ### Details
 
-0/ Before building the database setup the python environment. 
+0/ Setup the python environment before building the database. 
 In a shell (MacOS terminal) run
 
 ```
@@ -106,12 +107,10 @@ pip install rhino3dm          # install rhino3dm in the python environment
 ```
    utils/loadReadings --infile='testData.csv' --outdb=SensorReadings.db
 ```
-This may indicates 1 bad line in 10,000.
+This may indicate some bad line lines have been ommitted.
 
-Then extract sensor locations from (Rhino) `3dm` and write to file `sensorLocations.txt`.
+Then extract sensor locations from garage_sensors.3dm and write to file `sensorLocations.txt`.
 ```
-   utils/extract3dmSensorLocations garage_sensors.3dm >sensorLocations.txt
-or  older
    utils/extract3dmSensorLocations slab_sensors.3dm  >sensorLocations.txt
 ```
 
@@ -148,6 +147,9 @@ Finally, load sensor details (id, location, module id, module socket number)  in
     .exit
 ```
 
+See  [sqlite.md](./examples/sqlite.md) for more sqlite examples.
+
+and see  [python.md](./examples/python.md) for python examples
 
 ## Data Display
 
